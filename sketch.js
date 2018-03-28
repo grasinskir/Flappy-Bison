@@ -2,7 +2,9 @@
 let bison;
 let xPos = 300;
 let yPos = 400;
-let pipe;
+
+// Pipe variables
+let pipe = [];
 
 
 // Create Bison object
@@ -34,10 +36,11 @@ class Barrier{
   constructor(){
     this.x = 1100;
     this.y = 0;
-    this.xVelocity = -10;
+    this.xVelocity = -4;
     this.width = 100;
-    this.length = random(300, 600);
+    this.length = random(200, 600);
     this.y2 = this.length + 200;
+    this.length2 = 800 - this.length;
   }
 
   // Make pipe
@@ -45,7 +48,13 @@ class Barrier{
     noStroke();
     fill(0);
     rect(this.x, this.y, this.width, this.length);
-    rect(this.x, this.y2, this.width, this.length);
+    rect(this.x, this.y2, this.width, this.length2);
+  }
+
+  // Move pipe
+  movePipe(){
+    this.x += this.xVelocity;
+    this.xVelocity += -.005;
   }
 
 
@@ -56,7 +65,7 @@ class Barrier{
 function setup(){
   createCanvas(1200, 800);
   bison = new Bird();
-  pipe = new Barrier();
+  pipe.push(new Barrier);
 }
 
 
@@ -71,11 +80,19 @@ function draw(){
    }
 
    // Basic pipe values
-   pipe.makePipe();
+   for(i = 0; i < pipe.length; i++){
+     pipe[i].makePipe();
+     pipe[i].movePipe();
+     // Create new pipe every 200 "units"
+     if(pipe[i].x < 1000 && pipe[i].x > 800){
+       pipe.push(new Barrier);
+     }
+   }
+
 }
 
 
 
 function mousePressed(){
-  bison.ySpeed = -5;
+  bison.ySpeed = -6;
 }
