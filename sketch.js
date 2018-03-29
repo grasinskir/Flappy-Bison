@@ -8,6 +8,9 @@ let pipe = [];
 let xPosition = 1100;
 let yPosition = 0;
 
+// End conditions
+let end = false;
+
 
 // Create Bison object
 class Bird{
@@ -28,7 +31,7 @@ class Bird{
   // Bison falls if mouse not clicked
   moveBison(){
     this.y += this.ySpeed;
-    this.ySpeed += .15;
+    this.ySpeed += .2;
 
   }
 }
@@ -40,7 +43,7 @@ class Barrier{
     this.y = yPosition;
     this.xVelocity = -4;
     this.width = 100;
-    this.length = random(200, 600);
+    this.length = random(50, 550);
     this.y2 = this.length + 200;
     this.length2 = 800 - this.length;
   }
@@ -82,14 +85,40 @@ function draw(){
    }
 
    // Basic pipe values
-   for(i = 0; i < pipe.length; i++){
+   for(let i = 0; i < pipe.length; i++){
      pipe[i].makePipe();
      pipe[i].movePipe();
      // Create new pipe every 200 "units"
-     if(pipe[i].x <= 1000 & pipe[i].x >= 800){
+     if(pipe[i].x == 781.7499999999999){
        pipe.push(new Barrier);
      }
+
+     // Delete old pipe if it goes offscreen
+     if(pipe[i].x == -103.05499999999684){
+       pipe.splice(i, 1);
+       i--;
+     }
    }
+
+   // Check to see if the bison touches the Pipe or ground
+   for(let i = 0; i < pipe.length; i++){
+     if(pipe[i].x <= bison.x  && pipe[i].x + 100 >= bison.x &&
+        pipe[i].y <= bison.y && pipe[i].y + pipe[i].length >= bison.y ||
+        pipe[i].y2 <= bison.y  && pipe[i].y2 + pipe[i].length2 >= bison.y &&
+        pipe[i].x <= bison.x  && pipe[i].x + 100 >= bison.x ||
+        bison.y >= height - 10){
+       end = true;
+     }
+   }
+
+   console.log(end);
+
+    // End conditions
+    if(end){
+      fill(255,0,0);
+      text ("Game Over", width/2 - 80, height/2);
+    }
+
 
 }
 
