@@ -5,6 +5,8 @@ let yPos = 400;
 
 // Pipe variables
 let pipe = [];
+let xPosition = 1100;
+let yPosition = 0;
 
 
 // Create Bison object
@@ -34,8 +36,8 @@ class Bird{
 // Create pipe objects
 class Barrier{
   constructor(){
-    this.x = 1100;
-    this.y = 0;
+    this.x = xPosition;
+    this.y = yPosition;
     this.xVelocity = -4;
     this.width = 100;
     this.length = random(200, 600);
@@ -84,7 +86,7 @@ function draw(){
      pipe[i].makePipe();
      pipe[i].movePipe();
      // Create new pipe every 200 "units"
-     if(pipe[i].x < 1000 && pipe[i].x > 800){
+     if(pipe[i].x <= 1000 & pipe[i].x >= 800){
        pipe.push(new Barrier);
      }
    }
