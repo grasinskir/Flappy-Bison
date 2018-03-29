@@ -8,6 +8,7 @@ let appa;
 let pipe = [];
 let xPosition = 1200;
 let yPosition = 0;
+let mountaininverted;
 
 // End conditions
 let end = false;
@@ -20,7 +21,7 @@ let click = true;
 
 function preload(){
   appa = loadImage("bison flying.png");
-
+  mountaininverted = loadImage("floatingmountain.png");
 }
 
 
@@ -37,6 +38,7 @@ class Bird{
   makeBison(){
     noStroke();
     fill(255);
+    imageMode(CENTER);
     image(appa, this.x, this.y, this.r, this.r);
   }
 
@@ -64,7 +66,8 @@ class Barrier{
   makePipe(){
     noStroke();
     fill(0);
-    rect(this.x, this.y, this.width, this.length);
+    imageMode(CORNER);
+    image(mountaininverted, this.x, this.y, this.width, this.length);
     rect(this.x, this.y2, this.width, this.length2);
   }
 
@@ -84,7 +87,7 @@ function setup(){
   bison = new Bird();
   pipe.push(new Barrier);
   textSize(35);
-  imageMode(CENTER);
+
 }
 
 
