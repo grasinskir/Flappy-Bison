@@ -11,6 +11,9 @@ let yPosition = 0;
 // End conditions
 let end = false;
 
+// Score variables
+let score = 0;
+
 
 // Create Bison object
 class Bird{
@@ -117,7 +120,24 @@ function draw(){
     if(end){
       fill(255,0,0);
       text ("Game Over", width/2 - 80, height/2);
+      for(i = 0; i < pipe.length; i++){
+        pipe[i].xVelocity = 0;
+        bison.y = -20;
+      }
     }
+
+    // Scoring
+    textSize(35);
+    fill(255, 0, 0);
+  text("Score", width/2 - 40, height/8);
+  text(score, width/2 - 5, height/5.5);
+    for(let i = 0; i < pipe.length; i++){
+      if(pipe[i].x + 100 >= bison.x - 4 && pipe[i].x + 100 <= bison.x + 4 && pipe[i].y + pipe[i].length <= bison.y
+        && pipe[i].y2 >= bison.y){
+        score += 1;
+      }
+    }
+
 
 
 }
