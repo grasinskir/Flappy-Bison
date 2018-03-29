@@ -1,11 +1,12 @@
 // Bison variables
 let bison;
 let xPos = 300;
-let yPos = 400;
+let yPos = -20;
+let appa;
 
 // Pipe variables
 let pipe = [];
-let xPosition = 1100;
+let xPosition = 1200;
 let yPosition = 0;
 
 // End conditions
@@ -14,13 +15,21 @@ let end = false;
 // Score variables
 let score = 0;
 
+// Start variables
+let click = true;
+
+function preload(){
+  appa = loadImage("bison flying.png");
+
+}
+
 
 // Create Bison object
 class Bird{
   constructor(){
     this.x = xPos;
     this.y = yPos;
-    this.r = 20;
+    this.r = 50;
     this.ySpeed = 0;
   }
 
@@ -28,7 +37,7 @@ class Bird{
   makeBison(){
     noStroke();
     fill(255);
-    ellipse(this.x, this.y, this.r, this.r);
+    image(appa, this.x, this.y, this.r, this.r);
   }
 
   // Bison falls if mouse not clicked
@@ -74,10 +83,18 @@ function setup(){
   createCanvas(1200, 800);
   bison = new Bird();
   pipe.push(new Barrier);
+  textSize(35);
+  imageMode(CENTER);
 }
 
 
 function draw(){
+  if(click){
+    background(100);
+    sleep(2000);
+    start();
+  } else {
+
   background(100);
 
   // Basic bison movement
@@ -92,12 +109,13 @@ function draw(){
      pipe[i].makePipe();
      pipe[i].movePipe();
      // Create new pipe every 200 "units"
-     if(pipe[i].x == 781.7499999999999){
+     if(pipe[i].x == 797.675){
        pipe.push(new Barrier);
+
      }
 
      // Delete old pipe if it goes offscreen
-     if(pipe[i].x == -103.05499999999684){
+     if(pipe[i].x == -104.51499999999652){
        pipe.splice(i, 1);
        i--;
      }
@@ -111,10 +129,10 @@ function draw(){
         pipe[i].x <= bison.x  && pipe[i].x + 100 >= bison.x ||
         bison.y >= height - 10){
        end = true;
+       click = true;
      }
    }
 
-   console.log(end);
 
     // End conditions
     if(end){
@@ -139,11 +157,51 @@ function draw(){
     }
 
 
-
+}
 }
 
 
 
 function mousePressed(){
+  // Reverse bison speed
   bison.ySpeed = -6;
+
+  // Start
+//   if(mouseX >= width/2 - 100 && mouseX <= width/2 + 20 &&
+//      mouseY >= height/2 + 180 && mouseY <= height/2 + 240){
+//       click = !click;
+//     end = false;
+//     score = 0;
+//     pipe.push(new Barrier);
+// }
+}
+
+function start(){
+  // image(earth, 600, 400, 1200, 800);
+  fill(255, 0, 0);
+  text("Flappy Bison", width/2 - 140, height/2 + 25);
+  text("Play", width/2 - 40, height/2 + 200);
+  end = false;
+  xPosition = 1200;
+  yPosition = 0;
+  pipe = [];
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
+function keyTyped() {
+  if (event.keyCode == 13){
+    click = false;
+    end = false;
+    score = 0;
+    pipe.push(new Barrier);
+  }
+
 }
