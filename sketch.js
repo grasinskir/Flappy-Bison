@@ -8,7 +8,7 @@ let appa;
 let pipe = [];
 let xPosition = 1200;
 let yPosition = 0;
-let mountaininverted;
+let tree;
 
 // End conditions
 let end = false;
@@ -19,9 +19,22 @@ let score = 0;
 // Start variables
 let click = true;
 
+// Background variables
+let begin;
+let chase;
+
+// Music variables
+let appagrowl;
+let appajump;
+
 function preload(){
   appa = loadImage("bison flying.png");
-  mountaininverted = loadImage("floatingmountain.png");
+  tree = loadImage("treepillar.png");
+  begin = loadImage("forestpic.jpg");
+  chase = loadImage("forestchase.jpg");
+  appagrowl = loadSound("Appagrowl.wav");
+  appajump = loadSound("appajump.wav");
+
 }
 
 
@@ -67,8 +80,8 @@ class Barrier{
     noStroke();
     fill(0);
     imageMode(CORNER);
-    image(mountaininverted, this.x, this.y, this.width, this.length);
-    rect(this.x, this.y2, this.width, this.length2);
+    image(tree, this.x, this.y, this.width, this.length);
+    image(tree, this.x, this.y2, this.width, this.length2);
   }
 
   // Move pipe
@@ -93,12 +106,15 @@ function setup(){
 
 function draw(){
   if(click){
-    background(100);
+    // Start conditions and beginning background
+    imageMode(CENTER);
+    image(begin, 600, 400, 1200, 800);
     sleep(2000);
     start();
   } else {
-
-  background(100);
+  // Set background for during the game
+  imageMode(CENTER);
+  image(chase, 600, 400, 1200, 800);
 
   // Basic bison movement
   bison.makeBison();
@@ -139,6 +155,7 @@ function draw(){
 
     // End conditions
     if(end){
+      appagrowl.play();
       fill(255,0,0);
       text ("Game Over", width/2 - 80, height/2);
       for(i = 0; i < pipe.length; i++){
@@ -166,21 +183,14 @@ function draw(){
 
 
 function mousePressed(){
+  // Play cool sound if bison jumps
+  appajump.play();
   // Reverse bison speed
   bison.ySpeed = -6;
-
-  // Start
-//   if(mouseX >= width/2 - 100 && mouseX <= width/2 + 20 &&
-//      mouseY >= height/2 + 180 && mouseY <= height/2 + 240){
-//       click = !click;
-//     end = false;
-//     score = 0;
-//     pipe.push(new Barrier);
-// }
 }
 
 function start(){
-  // image(earth, 600, 400, 1200, 800);
+  // Start out the game
   fill(255, 0, 0);
   text("Flappy Bison", width/2 - 140, height/2 + 25);
   text("Play", width/2 - 40, height/2 + 200);
@@ -191,6 +201,7 @@ function start(){
 }
 
 function sleep(milliseconds) {
+  // Delay for when you die so you can see how you die
   var start = new Date().getTime();
   for (var i = 0; i < 1e7; i++) {
     if ((new Date().getTime() - start) > milliseconds){
@@ -200,6 +211,7 @@ function sleep(milliseconds) {
 }
 
 function keyTyped() {
+  // Press ENTER to start
   if (event.keyCode == 13){
     click = false;
     end = false;
