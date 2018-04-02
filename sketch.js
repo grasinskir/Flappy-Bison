@@ -18,6 +18,7 @@ let score = 0;
 
 // Start variables
 let click = true;
+let press = true;
 
 // Background variables
 let begin;
@@ -187,6 +188,18 @@ function mousePressed(){
   appajump.play();
   // Reverse bison speed
   bison.ySpeed = -6;
+  // Start conditions
+  //(press is so that you can't click the spot again and reset the game)
+  if(press){
+  if(mouseX >= width/2 - 100 && mouseX <= width/2 + 20 &&
+     mouseY >= height/2 + 180 && mouseY <= height/2 + 240){
+      click = false;
+    end = false;
+    score = 0;
+    pipe.push(new Barrier);
+    press = false;
+  }
+}
 }
 
 function start(){
@@ -198,6 +211,7 @@ function start(){
   xPosition = 1200;
   yPosition = 0;
   pipe = [];
+  press = true;
 }
 
 function sleep(milliseconds) {
@@ -208,15 +222,4 @@ function sleep(milliseconds) {
       break;
     }
   }
-}
-
-function keyTyped() {
-  // Press ENTER to start
-  if (event.keyCode == 13){
-    click = false;
-    end = false;
-    score = 0;
-    pipe.push(new Barrier);
-  }
-
 }
