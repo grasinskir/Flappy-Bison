@@ -29,7 +29,7 @@ let appagrowl;
 let appajump;
 
 function preload(){
-  appa = loadImage("bison flying.png");
+  appa = loadImage("appaside.png");
   tree = loadImage("treepillar.png");
   begin = loadImage("forestpic.jpg");
   chase = loadImage("forestchase.jpg");
@@ -44,7 +44,8 @@ class Bird{
   constructor(){
     this.x = xPos;
     this.y = yPos;
-    this.r = 50;
+    this.h = 50;
+    this.l = 100;
     this.ySpeed = 0;
   }
 
@@ -53,7 +54,7 @@ class Bird{
     noStroke();
     fill(255);
     imageMode(CENTER);
-    image(appa, this.x, this.y, this.r, this.r);
+    image(appa, this.x, this.y, this.l, this.h);
   }
 
   // Bison falls if mouse not clicked
