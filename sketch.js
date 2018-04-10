@@ -2,7 +2,11 @@
 let bison;
 let xPos = 300;
 let yPos = -20;
-let appa;
+let appa1;
+let appa2;
+let appa3;
+let appas = [];
+let cycleappa = 1;
 
 // Pipe variables
 let pipe = [];
@@ -29,12 +33,17 @@ let appagrowl;
 let appajump;
 
 function preload(){
-  appa = loadImage("appaside.png");
+  appa1 = loadImage("appaside.png");
+  appa2 = loadImage("appaside2.png");
+  appa3 = loadImage("appaside3.png");
   tree = loadImage("treepillar.png");
   begin = loadImage("forestpic.jpg");
   chase = loadImage("forestchase.jpg");
   appagrowl = loadSound("Appagrowl.wav");
   appajump = loadSound("appajump.wav");
+  appas [0]= appa1;
+  appas[1] = appa2;
+  appas[3]= appa3;
 
 }
 
@@ -54,7 +63,7 @@ class Bird{
     noStroke();
     fill(255);
     imageMode(CENTER);
-    image(appa, this.x, this.y, this.l, this.h);
+    image(appas[cycleappa%3], this.x, this.y, this.l, this.h);
   }
 
   // Bison falls if mouse not clicked
@@ -200,6 +209,8 @@ function mousePressed(){
     pipe.push(new Barrier);
     press = false;
   }
+  tailflap();
+  setInterval(appas[cycleappa%3], 800);
 }
 }
 
@@ -223,4 +234,8 @@ function sleep(milliseconds) {
       break;
     }
   }
+}
+
+function tailflap(){
+  cycleappa++;
 }
