@@ -6,7 +6,8 @@ let appa1;
 let appa2;
 let appa3;
 let appas = [];
-let cycleappa = 1;
+let cycleappa = 0;
+let cyclesprite;
 
 // Pipe variables
 let pipe = [];
@@ -43,7 +44,8 @@ function preload(){
   appajump = loadSound("appajump.wav");
   appas [0]= appa1;
   appas[1] = appa2;
-  appas[3]= appa3;
+  appas[2]= appa3;
+  appas[3]= appa2;
 
 }
 
@@ -63,7 +65,7 @@ class Bird{
     noStroke();
     fill(255);
     imageMode(CENTER);
-    image(appas[cycleappa%3], this.x, this.y, this.l, this.h);
+    image(appas[cycleappa%4], this.x, this.y, this.l, this.h);
   }
 
   // Bison falls if mouse not clicked
@@ -189,6 +191,11 @@ function draw(){
 
 
 }
+
+if(cycleappa%4 == 0){
+  clearInterval(cyclesprite);
+console.log(cycleappa);
+}
 }
 
 
@@ -209,9 +216,10 @@ function mousePressed(){
     pipe.push(new Barrier);
     press = false;
   }
-  tailflap();
-  setInterval(appas[cycleappa%3], 800);
+
 }
+cyclesprite = setInterval(tailflap, 55);
+tailflap();
 }
 
 function start(){
@@ -238,4 +246,5 @@ function sleep(milliseconds) {
 
 function tailflap(){
   cycleappa++;
+  console.log(xPos);
 }
