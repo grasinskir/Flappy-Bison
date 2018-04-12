@@ -27,19 +27,25 @@ let press = true;
 
 // Background variables
 let begin;
-let chase;
+let chaseregular;
+let chaseinverted;
+let backgroundx = 0;
+let backgroundx2 = 1200;
+let backgroundspeed = -0.5;
 
 // Music variables
 let appagrowl;
 let appajump;
 
+// Load images and sound
 function preload(){
   appa1 = loadImage("appaside.png");
   appa2 = loadImage("appaside2.png");
   appa3 = loadImage("appaside3.png");
   tree = loadImage("treepillar.png");
   begin = loadImage("forestpic.jpg");
-  chase = loadImage("forestchase.jpg");
+  chaseregular = loadImage("forestchaseregular2.jpg");
+  chaseinverted = loadImage("forestchaseinverted2.jpg");
   appagrowl = loadSound("Appagrowl.wav");
   appajump = loadSound("appajump.wav");
   appas [0]= appa1;
@@ -125,9 +131,18 @@ function draw(){
     sleep(2000);
     start();
   } else {
+
   // Set background for during the game
-  imageMode(CENTER);
-  image(chase, 600, 400, 1200, 800);
+  imageMode(CORNER);
+  image(chaseregular, backgroundx, 0, 1200, 800);
+  image(chaseinverted, backgroundx2, 0, 1200, 800);
+  moveBackground();
+  if(backgroundx <= backgroundx - 1200){
+    backgroundx = 1200;
+  }
+  if(backgroundx2 <= backgroundx2 - 2400){
+    backgroundx2 = 1200;
+  }
 
   // Basic bison movement
   bison.makeBison();
@@ -140,6 +155,7 @@ function draw(){
    for(let i = 0; i < pipe.length; i++){
      pipe[i].makePipe();
      pipe[i].movePipe();
+
      // Create new pipe every 200 "units"
      if(pipe[i].x == 797.675){
        pipe.push(new Barrier);
@@ -192,9 +208,9 @@ function draw(){
 
 }
 
+// Reset interval
 if(cycleappa%4 == 0){
   clearInterval(cyclesprite);
-console.log(cycleappa);
 }
 }
 
@@ -218,8 +234,15 @@ function mousePressed(){
   }
 
 }
+
+// Establish interval for animation of tail
 cyclesprite = setInterval(tailflap, 55);
 tailflap();
+if(cycleappa > 5){
+  cycleappa = 0;
+  clearInterval(cyclesprite);
+}
+
 }
 
 function start(){
@@ -232,6 +255,8 @@ function start(){
   yPosition = 0;
   pipe = [];
   press = true;
+  backgroundx = 0;
+  backgroundx2 = 1200;
 }
 
 function sleep(milliseconds) {
@@ -244,7 +269,12 @@ function sleep(milliseconds) {
   }
 }
 
+// Rotate between appa images
 function tailflap(){
   cycleappa++;
-  console.log(xPos);
+}
+
+function moveBackground(){
+  backgroundx += backgroundspeed;
+  backgroundx2 += backgroundspeed;
 }
