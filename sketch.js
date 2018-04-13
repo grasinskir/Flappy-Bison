@@ -8,6 +8,8 @@ let appa3;
 let appas = [];
 let cycleappa = 0;
 let cyclesprite;
+let timer = 55;
+let myIntervalArray = [];
 
 // Pipe variables
 let pipe = [];
@@ -212,11 +214,17 @@ function draw(){
 if(cycleappa%4 == 0){
   clearInterval(cyclesprite);
 }
+// if(timer >=){
+//   cycleappa = 0;
+//   clearInterval(cyclesprite);
+// }
 }
 
 
 
 function mousePressed(){
+  // clearInterval(cyclesprite);
+  // cycleappa = 0;
   // Play cool sound if bison jumps
   appajump.play();
   // Reverse bison speed
@@ -236,14 +244,42 @@ function mousePressed(){
 }
 
 // Establish interval for animation of tail
-cyclesprite = setInterval(tailflap, 55);
-tailflap();
-if(cycleappa > 5){
+// cyclesprite = setInterval(tailflap, 55);
+// tailflap();
+// if(cycleappa > 5){
+//   cycleappa = 0;
+//   clearInterval(cyclesprite);
+// }
+
+ cyclesprite = setInterval(tailflap, timer);
+ tailflap();
+console.log(cyclesprite);
+// if(!cyclesprite){
+//   cyclesprite = setInterval(tailflap, timer);
+// }else{
+//     cyclesprite = false;
+//     clearInterval(cyclesprite);
+//     cycleappa = 0;
+//   }
+// if(intervalID <= timer){
+//   clearInterval(cyclesprite);
+//   cycleappa = 0;
+// }
+
+myIntervalArray.push(cyclesprite);
+
+for (var i=0; i<myIntervalArray.length; i++){
+  if(i > 1){
+  clearInterval(myIntervalArray[i]);
   cycleappa = 0;
-  clearInterval(cyclesprite);
+}
+}
 }
 
-}
+// function mouseReleased(){
+//   cycleappa = 0;
+//   clearInterval(cyclesprite);
+// }
 
 function start(){
   // Start out the game
@@ -272,6 +308,7 @@ function sleep(milliseconds) {
 // Rotate between appa images
 function tailflap(){
   cycleappa++;
+
 }
 
 function moveBackground(){
