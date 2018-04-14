@@ -8,8 +8,9 @@ let appa3;
 let appas = [];
 let cycleappa = 0;
 let cyclesprite;
-let timer = 55;
-let myIntervalArray = [];
+// This was the lowest interval time where the game didn't break :D
+let timer = 37;
+
 
 // Pipe variables
 let pipe = [];
@@ -41,15 +42,22 @@ let appajump;
 
 // Load images and sound
 function preload(){
+  // Appas
   appa1 = loadImage("appaside.png");
   appa2 = loadImage("appaside2.png");
   appa3 = loadImage("appaside3.png");
+  // Pipe
   tree = loadImage("treepillar.png");
+  // Start screen image
   begin = loadImage("forestpic.jpg");
+  // Background images during the game
   chaseregular = loadImage("forestchaseregular2.jpg");
   chaseinverted = loadImage("forestchaseinverted2.jpg");
+  // Appa dying sound
   appagrowl = loadSound("Appagrowl.wav");
+  // Appa jumping sound
   appajump = loadSound("appajump.wav");
+  // A certain appa is selected by a certain array value
   appas [0]= appa1;
   appas[1] = appa2;
   appas[2]= appa3;
@@ -115,7 +123,7 @@ class Barrier{
 
 }
 
-
+// Setup the game, make bison, add pipes, set text size
 function setup(){
   createCanvas(1200, 800);
   bison = new Bird();
@@ -132,17 +140,18 @@ function draw(){
     image(begin, 600, 400, 1200, 800);
     sleep(2000);
     start();
-  } else {
 
+  } else {
   // Set background for during the game
   imageMode(CORNER);
   image(chaseregular, backgroundx, 0, 1200, 800);
   image(chaseinverted, backgroundx2, 0, 1200, 800);
   moveBackground();
-  if(backgroundx <= backgroundx - 1200){
+  // Loops backgrounds in sequence
+  if(backgroundx + 1200 <= 0){
     backgroundx = 1200;
   }
-  if(backgroundx2 <= backgroundx2 - 2400){
+  if(backgroundx2 + 1200 <= 0){
     backgroundx2 = 1200;
   }
 
@@ -192,6 +201,9 @@ function draw(){
       for(i = 0; i < pipe.length; i++){
         pipe[i].xVelocity = 0;
         bison.y = -20;
+        clearInterval(cyclesprite);
+        cycleappa = 0;
+        cyclesprite = 0;
       }
     }
 
@@ -201,7 +213,8 @@ function draw(){
   text("Score", width/2 - 40, height/8);
   text(score, width/2 - 5, height/5.5);
     for(let i = 0; i < pipe.length; i++){
-      if(pipe[i].x + 100 >= bison.x - 4 && pipe[i].x + 100 <= bison.x + 4 && pipe[i].y + pipe[i].length <= bison.y
+      if(pipe[i].x + 100 >= bison.x - 4 && pipe[i].x + 100 <= bison.x + 4
+        && pipe[i].y + pipe[i].length <= bison.y
         && pipe[i].y2 >= bison.y){
         score += 1;
       }
@@ -210,79 +223,47 @@ function draw(){
 
 }
 
-// Reset interval
-if(cycleappa%4 == 0){
+  // Reset interval
+  if(cycleappa%4 == 0){
   clearInterval(cyclesprite);
-}
-// if(timer >=){
-//   cycleappa = 0;
-//   clearInterval(cyclesprite);
-// }
+  }
 }
 
 
 
 function mousePressed(){
-  // clearInterval(cyclesprite);
-  // cycleappa = 0;
   // Play cool sound if bison jumps
-  appajump.play();
+  // !press is so you won't here sounds on the start screen
+  if(!press){
+    appajump.play();
+  }
+
   // Reverse bison speed
   bison.ySpeed = -6;
+
   // Start conditions
-  //(press is so that you can't click the spot again and reset the game)
+  // press is so that you can't click the spot again and reset the game
   if(press){
   if(mouseX >= width/2 - 100 && mouseX <= width/2 + 20 &&
      mouseY >= height/2 + 180 && mouseY <= height/2 + 240){
       click = false;
-    end = false;
-    score = 0;
-    pipe.push(new Barrier);
-    press = false;
+      end = false;
+      score = 0;
+      pipe.push(new Barrier);
+      press = false;
   }
-
 }
 
-// Establish interval for animation of tail
-// cyclesprite = setInterval(tailflap, 55);
-// tailflap();
-// if(cycleappa > 5){
-//   cycleappa = 0;
-//   clearInterval(cyclesprite);
-// }
-
- cyclesprite = setInterval(tailflap, timer);
- tailflap();
-console.log(cyclesprite);
-// if(!cyclesprite){
-//   cyclesprite = setInterval(tailflap, timer);
-// }else{
-//     cyclesprite = false;
-//     clearInterval(cyclesprite);
-//     cycleappa = 0;
-//   }
-// if(intervalID <= timer){
-//   clearInterval(cyclesprite);
-//   cycleappa = 0;
-// }
-
-myIntervalArray.push(cyclesprite);
-
-for (var i=0; i<myIntervalArray.length; i++){
-  if(i > 1){
-  clearInterval(myIntervalArray[i]);
-  cycleappa = 0;
+  // Establish interval for animation of tail
+  // !press is so that clicking on the start screen doesn't mess up the interval
+  if(!press){
+    cyclesprite = setInterval(tailflap, timer);
+    tailflap();
+  }
 }
-}
-}
-
-// function mouseReleased(){
-//   cycleappa = 0;
-//   clearInterval(cyclesprite);
-// }
 
 function start(){
-  // Start out the game
+  // Start out the game and make sure all variables are set
   fill(255, 0, 0);
   text("Flappy Bison", width/2 - 140, height/2 + 25);
   text("Play", width/2 - 40, height/2 + 200);
@@ -293,6 +274,9 @@ function start(){
   press = true;
   backgroundx = 0;
   backgroundx2 = 1200;
+  clearInterval(cyclesprite);
+  cycleappa = 0;
+  cyclesprite = 0;
 }
 
 function sleep(milliseconds) {
@@ -311,6 +295,7 @@ function tailflap(){
 
 }
 
+// Make background scroll across screen
 function moveBackground(){
   backgroundx += backgroundspeed;
   backgroundx2 += backgroundspeed;
