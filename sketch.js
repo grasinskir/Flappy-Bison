@@ -9,7 +9,7 @@ let appas = [];
 let cycleappa = 0;
 let cyclesprite;
 // This was the lowest interval time where the game didn't break :D
-let timer = 37;
+let timer = 33;
 
 
 // Pipe variables
