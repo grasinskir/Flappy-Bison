@@ -9,7 +9,9 @@ let appas = [];
 let cycleappa = 0;
 let cyclesprite;
 // This was the lowest interval time where the game didn't break :D
-let timer = 30;
+let timer = 33;
+let check;
+let clicknumber;
 
 
 // Pipe variables
@@ -224,14 +226,26 @@ function draw(){
 }
 
   // Reset interval
-  if(cycleappa%4 == 0){
+  if(cycleappa%4 == 0 || cycleappa > 4){
   clearInterval(cyclesprite);
+  cycleappa = 0;
   }
+//   if(!press){
+//   if(mouseIsPressed){
+//     if(clicknumber == 1){
+//       check = millis();
+//     }
+//   }
+//
+// }
 }
 
 
 
 function mousePressed(){
+// if(!press){
+//   clicknumber++;
+// }
   // Play cool sound if bison jumps
   // !press is so you won't here sounds on the start screen
   if(!press){
@@ -259,7 +273,12 @@ function mousePressed(){
   if(!press){
     cyclesprite = setInterval(tailflap, timer);
     tailflap();
+    // check = millis();
+    // if((millis() - check) < timer*4){
+    //   clearInterval(cyclesprite);
+    // }
   }
+
 }
 
 function start(){
