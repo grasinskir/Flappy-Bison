@@ -25,6 +25,7 @@ let score = 0;
 // Start variables
 let click = true;
 let press = true;
+let secret = false;
 
 // Background variables
 let begin;
@@ -140,6 +141,10 @@ function draw(){
     start();
 
   } else {
+    // Tail flap is quicker if you press the secret button
+    if(secret){
+      timer = 35;
+    }
   // Set background for during the game
   imageMode(CORNER);
   image(chaseregular, backgroundx, 0, 1200, 800);
@@ -202,6 +207,7 @@ function draw(){
         clearInterval(cyclesprite);
         cycleappa = 0;
         cyclesprite = 0;
+        secret = false;
       }
     }
 
@@ -241,6 +247,10 @@ function mousePressed(){
 
   // Reverse bison speed
   bison.ySpeed = -8.5;
+  // If you press the secret start button you get a lower jump
+  if(secret){
+    bison.ySpeed = -6;
+  }
 
   // Start conditions
   // press is so that you can't click the spot again and reset the game
@@ -253,6 +263,19 @@ function mousePressed(){
       pipe.push(new Barrier);
       press = false;
   }
+
+  // Secret button to press that makes the game easier
+  if(mouseX >= 850 && mouseX <= 950 &&
+     mouseY >= 250 && mouseY <= 350){
+       click = false;
+       end = false;
+       score = 0;
+       pipe.push(new Barrier);
+       press = false;
+       bison.ySpeed = -6;
+       secret = true;
+     }
+     console.log(timer);
 }
 
   // Establish interval for animation of tail
