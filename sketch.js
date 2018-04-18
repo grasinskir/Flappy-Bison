@@ -1,14 +1,14 @@
 // Bison variables
 let bison;
 let xPos = 300;
-let yPos = -20;
+let yPos = 400;
 let appa1;
 let appa2;
 let appa3;
 let appas = [];
 let cycleappa = 0;
 let cyclesprite;
-let timer = 35;
+let timer = 55;
 
 // Pipe variables
 let pipe = [];
@@ -198,7 +198,7 @@ function draw(){
       text ("Game Over", width/2 - 80, height/2);
       for(i = 0; i < pipe.length; i++){
         pipe[i].xVelocity = 0;
-        bison.y = -20;
+        bison.y = 400;
         clearInterval(cyclesprite);
         cycleappa = 0;
         cyclesprite = 0;
@@ -240,7 +240,7 @@ function mousePressed(){
   }
 
   // Reverse bison speed
-  bison.ySpeed = -6;
+  bison.ySpeed = -8.5;
 
   // Start conditions
   // press is so that you can't click the spot again and reset the game
