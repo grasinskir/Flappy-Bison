@@ -275,7 +275,6 @@ function mousePressed(){
        bison.ySpeed = -6;
        secret = true;
      }
-     console.log(timer);
 }
 
   // Establish interval for animation of tail
