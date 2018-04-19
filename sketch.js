@@ -9,6 +9,7 @@ let appas = [];
 let cycleappa = 0;
 let cyclesprite;
 let timer = 55;
+let gravity = .2;
 
 // Pipe variables
 let pipe = [];
@@ -38,6 +39,9 @@ let backgroundspeed = -0.5;
 // Music variables
 let appagrowl;
 let appajump;
+
+// Phillip mode = really really hard
+let Phillip = false;
 
 // Load images and sound
 function preload(){
@@ -86,8 +90,7 @@ class Bird{
   // Bison falls if mouse not clicked
   moveBison(){
     this.y += this.ySpeed;
-    this.ySpeed += .2;
-
+    this.ySpeed += gravity;
   }
 }
 
@@ -141,6 +144,12 @@ function draw(){
     start();
 
   } else {
+    // Phillip mode is impossible
+    if(Phillip){
+      gravity = 1;
+      timer = 30;
+    }
+
     // Tail flap is quicker if you press the secret button
     if(secret){
       timer = 35;
@@ -208,6 +217,8 @@ function draw(){
         cycleappa = 0;
         cyclesprite = 0;
         secret = false;
+        gravity = .2;
+        Phillip = false;
       }
     }
 
@@ -237,6 +248,8 @@ function draw(){
 
 
 function mousePressed(){
+  console.log(mouseX);
+  console.log(mouseY);
   // Clears interval every time mouse is clicked so game doesn't break :D
   clearInterval(cyclesprite);
   // Play cool sound if bison jumps
@@ -251,12 +264,16 @@ function mousePressed(){
   if(secret){
     bison.ySpeed = -6;
   }
+  // If in phillip mode it will be impossible
+  if(Phillip){
+    bison.ySpeed = -2;
+  }
 
   // Start conditions
   // press is so that you can't click the spot again and reset the game
   if(press){
-  if(mouseX >= width/2 - 100 && mouseX <= width/2 + 20 &&
-     mouseY >= height/2 + 180 && mouseY <= height/2 + 240){
+  if(mouseX >= width/2 - 50 && mouseX <= width/2 + 30 &&
+     mouseY >= height/2 + 170 && mouseY <= height/2 + 200){
       click = false;
       end = false;
       score = 0;
@@ -275,6 +292,17 @@ function mousePressed(){
        bison.ySpeed = -6;
        secret = true;
      }
+
+    // Phillip mode button (hard mode)
+    if(mouseX >= width/2 + 100 && mouseX <= width/2 + 290 &&
+       mouseY >= height/2 + 170 && mouseY <= height/2 + 200){
+         click = false;
+         end = false;
+         score = 0;
+         pipe.push(new Barrier);
+         press = false;
+         Phillip = true;
+       }
 }
 
   // Establish interval for animation of tail
@@ -287,9 +315,13 @@ function mousePressed(){
 
 function start(){
   // Start out the game and make sure all variables are set
+  textSize(35);
   fill(255, 0, 0);
   text("Flappy Bison", width/2 - 140, height/2 + 25);
   text("Play", width/2 - 40, height/2 + 200);
+  text("Phillip Mode", width/2 + 100, height/2 + 200);
+  textSize(15);
+  text("Version 1.2", 50, 750);
   end = false;
   xPosition = 1200;
   yPosition = 0;
@@ -300,6 +332,7 @@ function start(){
   clearInterval(cyclesprite);
   cycleappa = 0;
   cyclesprite = 0;
+  gravity = .2;
 }
 
 function sleep(milliseconds) {
