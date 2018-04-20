@@ -45,7 +45,8 @@ let Phillip = false;
 
 // Chad mode = gravity control
 let Chad = false;
-let gforce = false;
+let gforce = true;
+let invertedappa;
 
 // Load images and sound
 function preload(){
@@ -65,12 +66,12 @@ function preload(){
   // Appa jumping sound
   appajump = loadSound("appajump.wav");
   // A certain appa is selected by a certain array value
-  appas [0]= appa1;
+  appas[0] = appa1;
   appas[1] = appa2;
-  appas[2]= appa3;
-  appas[3]= appa2;
+  appas[2] = appa3;
+  appas[3] = appa2;
   // Chad
-  // invertedappa = loadImage("")
+  invertedappa = loadImage("appasideupsidedown.png");
 
 }
 
@@ -282,17 +283,21 @@ function mousePressed(){
   }
 
   // If in chad mode, gravity reverses with every mouse click
+  if(!press){
     if(Chad){
       // Reverses the gravity
       if(gforce){
         gravity = -0.4;
+        appas[0] = invertedappa;
       }
       if(!gforce){
         gravity = 0.4;
+        appas[0] = appa1;
       }
       bison.ySpeed = 0;
       gforce = !gforce;
     }
+  }
 
   // Start conditions
   // press is so that you can't click the spot again and reset the game
@@ -358,7 +363,7 @@ function start(){
   text("Phillip Mode", width/2 + 100, height/2 + 200);
   text("Chad Mode", width/2 + 100, height/2 + 275);
   textSize(15);
-  text("Version 3.0", 50, 750);
+  text("Version 3.1", 50, 750);
   end = false;
   xPosition = 1200;
   yPosition = 0;
@@ -370,6 +375,9 @@ function start(){
   cycleappa = 0;
   cyclesprite = 0;
   gravity = .2;
+  appas[0] = appa1;
+  appas[1] = appa2;
+  appas[2] = appa3;
 }
 
 function sleep(milliseconds) {
