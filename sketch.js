@@ -43,6 +43,10 @@ let appajump;
 // Phillip mode = really really hard
 let Phillip = false;
 
+// Chad mode = gravity control
+let Chad = false;
+let gforce = false;
+
 // Load images and sound
 function preload(){
   // Appas
@@ -65,6 +69,8 @@ function preload(){
   appas[1] = appa2;
   appas[2]= appa3;
   appas[3]= appa2;
+  // Chad
+  // invertedappa = loadImage("")
 
 }
 
@@ -150,6 +156,12 @@ function draw(){
       timer = 30;
     }
 
+    // Rules for chad mode
+    if(Chad){
+      // No interval
+      clearInterval(cyclesprite);
+      cycleappa = 0;
+    }
     // Tail flap is quicker if you press the secret button
     if(secret){
       timer = 35;
@@ -204,7 +216,6 @@ function draw(){
      }
    }
 
-
     // End conditions
     if(end){
       appagrowl.play();
@@ -219,6 +230,7 @@ function draw(){
         secret = false;
         gravity = .2;
         Phillip = false;
+        Chad = false;
       }
     }
 
@@ -264,10 +276,23 @@ function mousePressed(){
   if(secret){
     bison.ySpeed = -6;
   }
-  // If in phillip mode it will be impossible
+  // If in phillip mode, it will be impossible
   if(Phillip){
     bison.ySpeed = -2;
   }
+
+  // If in chad mode, gravity reverses with every mouse click
+    if(Chad){
+      // Reverses the gravity
+      if(gforce){
+        gravity = -0.4;
+      }
+      if(!gforce){
+        gravity = 0.4;
+      }
+      bison.ySpeed = 0;
+      gforce = !gforce;
+    }
 
   // Start conditions
   // press is so that you can't click the spot again and reset the game
@@ -303,6 +328,17 @@ function mousePressed(){
          press = false;
          Phillip = true;
        }
+
+    // Chad mode button (gravity control)
+    if(mouseX >= width/2 + 100 && mouseX <= width/2 + 280 &&
+       mouseY >= height/2 + 245 && mouseY <= height/2 + 275){
+         click = false;
+         end = false;
+         score = 0;
+         pipe.push(new Barrier);
+         press = false;
+         Chad = true;
+       }
 }
 
   // Establish interval for animation of tail
@@ -320,8 +356,9 @@ function start(){
   text("Flappy Bison", width/2 - 140, height/2 + 25);
   text("Play", width/2 - 40, height/2 + 200);
   text("Phillip Mode", width/2 + 100, height/2 + 200);
+  text("Chad Mode", width/2 + 100, height/2 + 275);
   textSize(15);
-  text("Version 1.2", 50, 750);
+  text("Version 3.0", 50, 750);
   end = false;
   xPosition = 1200;
   yPosition = 0;
