@@ -343,6 +343,8 @@ function mousePressed(){
          pipe.push(new Barrier);
          press = false;
          Chad = true;
+         gforce = true;
+         gravity = 0.2;
        }
 }
 
